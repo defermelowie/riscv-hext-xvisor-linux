@@ -1,0 +1,6 @@
+[submodule "opensbi"]
+	path = opensbi
+	url = git@github.com:riscv-software-src/opensbi.git
+[submodule "xvisor"]
+	path = xvisor
+	url = git@github.com:xvisor/xvisor.git
