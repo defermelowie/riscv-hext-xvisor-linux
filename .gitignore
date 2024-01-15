@@ -1,0 +1,10 @@
+# Build targets
+*.o
+*.elf
+*.dump
+
+# Log files
+*.log
+
+# Editor specific
+.vscode

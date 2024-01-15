@@ -1,0 +1,29 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+- repo: https://github.com/espressif/conventional-precommit-linter
+  rev: v1.3.0
+  hooks:
+    - id: conventional-precommit-linter
+      stages: [commit-msg]
+      args:
+        - --types=feat,wip,fix,ci,refactor,revert,merge
+        - --subject-min-length=0
+        - --subject-max-length=100
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    - id: trailing-whitespace
+      stages: [pre-commit]
+    - id: end-of-file-fixer
+      stages: [pre-commit]
+    - id: check-yaml
+      stages: [pre-commit]
+    - id: check-json
+      stages: [pre-commit]
+    - id: check-toml
+      stages: [pre-commit]
+    - id: check-added-large-files
+      stages: [pre-commit]
+    - id: check-merge-conflict
+      stages: [pre-commit]
