@@ -6,5 +6,8 @@
 # Log files
 *.log
 
+# Device tree blobs
+*.dtb
+
 # Editor specific
 .vscode
