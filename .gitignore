@@ -2,6 +2,10 @@
 *.o
 *.elf
 *.dump
+busybox
+
+# Root file system archive
+*.cpio
 
 # Log files
 *.log

@@ -48,6 +48,61 @@ xvisor-qemu: $(XVISOR_ELF)
 	$(QEMU) -machine virt -cpu rv64,h=true -nographic -m 512M -bios $<
 
 #-------------------------------------------------------------------------------
+# openSBI with linux payload
+#-------------------------------------------------------------------------------
+
+LINUX_CONFIG := linux-sail-64b_defconfig
+LINUX_ELF := $(TARGETDIR)/opensbi_linux_payload.elf
+LINUX_INITRAMFS := $(TARGETDIR)/initramfs.cpio
+LINUX_DTB := $(TARGETDIR)/rv64gch.dtb
+
+# # Debug target: modify linux-sail-64b_defconfig using menuconfig
+# .PHONY: linuxconfig
+# linuxconfig: linux/build/.config
+# 	$(MAKE) -C linux O=build ARCH=riscv menuconfig
+# 	$(MAKE) -C linux O=build ARCH=riscv savedefconfig
+# 	cp linux/build/defconfig $(LINUX_CONFIG)
+
+.PHONY: linux
+linux: $(LINUX_ELF) $(LINUX_INITRAMFS)
+
+$(LINUX_ELF): linux/build/arch/riscv/boot/Image
+	$(MAKE) -C ./opensbi/ PLATFORM=generic CROSS_COMPILE=$(CROSS_COMPILE) FW_PAYLOAD_PATH=../$<
+	cp opensbi/build/platform/generic/firmware/fw_payload.elf $@
+
+linux/build/arch/riscv/boot/Image: linux/build/.config $(LINUX_INITRAMFS)
+	$(MAKE) -C linux O=build ARCH=riscv CROSS_COMPILE=$(CROSS_COMPILE) Image -j8
+
+linux/build/.config: $(LINUX_CONFIG)
+	cp $< ./linux/arch/riscv/configs/$<
+	$(MAKE) -C linux O=build ARCH=riscv $<
+
+$(LINUX_INITRAMFS): busybox/busybox initramfs/*
+	cp busybox/busybox initramfs/bin/
+	cd initramfs && find . -print0 | cpio --null -ov --format=newc --owner root:root > ../$(LINUX_INITRAMFS)
+
+busybox/busybox: busybox-config
+	cp busybox-config busybox/.config
+	$(MAKE) -C busybox ARCH=riscv CROSS_COMPILE=riscv64-unknown-linux-gnu- -j 8
+
+#-------------------------------------------------------------------------------
+
+.PHONY: linux-csim
+linux-csim: $(LINUX_ELF) $(LINUX_DTB)
+	$(SAIL_CSIM) -Vmem -Vplatform -Vreg -Vinstr \
+	--enable-dirty-update --enable-pmp --mtval-has-illegal-inst-bits --xtinst-has-transformed-inst \
+	--ram-size 512 --device-tree-blob $(LINUX_DTB) $<
+
+.PHONY: linux-spike
+linux-spike: $(LINUX_ELF) $(LINUX_DTB)
+	$(SPIKE) --isa rv64gch_zbb_zicsr -m512 --dtb=$(LINUX_DTB) $<
+
+# For debug purposes only
+.PHONY: linux-qemu
+linux-qemu: $(LINUX_ELF)
+	$(QEMU) -machine virt -cpu rv64,h=true -nographic -m 512M -bios $<
+
+#-------------------------------------------------------------------------------
 # Support targets
 #-------------------------------------------------------------------------------
 
@@ -55,7 +110,7 @@ rv64-osim.dts:
 	$(SAIL_OSIM) -dump-dts -o $@
 
 rv64-spike.dts:
-	$(SPIKE) --dump-dts none > $@
+	$(SPIKE) --isa rv64gch -m512 --dump-dts none > $@
 
 $(TARGETDIR)/%.dtb: %.dts
 	dtc $< > $@
@@ -63,8 +118,16 @@ $(TARGETDIR)/%.dtb: %.dts
 .PHONY: clean
 clean:
 	$(MAKE) -C ./opensbi/ clean
+	$(MAKE) -C busybox clean
+	rm -f ./initramfs/bin/busybox
+	$(MAKE) -C ./linux/ clean
+	$(MAKE) -C linux ARCH=riscv mrproper
+	rm -f ./linux/arch/riscv/configs/$(LINUX_CONFIG)
+	rm -f ./linux/build/arch/riscv/boot/Image
 	$(MAKE) -C ./xvisor/ clean
 	rm -f ./xvisor/arch/riscv/configs/$(XVISOR_CONFIG)
 	rm -f $(TARGETDIR)/*.dtb
+	rm -f $(TARGETDIR)/*.cpio
+	rm -f $(TARGETDIR)/*.elf
 	rm -f $(TARGETDIR)/*.dump
 	rm -f $(LOGDIR)/*.log

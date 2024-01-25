@@ -1,3 +1,47 @@
 # RISC-V Hypervisors
 
 > For testing hypervisor extension support in the Sail model
+
+## Initial setup
+
+Checkout git submodules:
+```bash
+git submodule update --init
+```
+
+Create target directory:
+```bash
+mkdir target
+```
+
+## Linux
+### Update path of initramfd to embed in linux kernel
+
+First get the new path:
+```bash
+echo $(pwd)/target/initramfs.cpio
+```
+Next, update [`linux-sail-64b_defconfig`](./linux-sail-64b_defconfig)
+```diff
+ CONFIG_NAMESPACES=y
+ CONFIG_USER_NS=y
+ CONFIG_CHECKPOINT_RESTORE=y
+ CONFIG_BLK_DEV_INITRD=y
+-CONFIG_INITRAMFS_SOURCE="old_initramfs.cpio"
++CONFIG_INITRAMFS_SOURCE="new_initramfs.cpio"
+ # CONFIG_RD_BZIP2 is not set
+ # CONFIG_RD_LZMA is not set
+ # CONFIG_RD_XZ is not set
+```
+
+### Build openSBI with linux kernel payload
+```bash
+make linux
+```
+
+### Run linux on emulator
+```bash
+make linux-qemu
+make linux-spike
+make linux-csim # WARNING: takes a long time
+```
