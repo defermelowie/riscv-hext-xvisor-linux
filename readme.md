@@ -15,7 +15,17 @@ mkdir target
 ```
 
 ## Linux
-### Update path of initramfd to embed in linux kernel
+
+### Create device files (can't be tracked by git)
+
+```bash
+sudo mknod -m 666 initramfs/dev/null c 1 3
+```
+```bash
+sudo mknod -m 600 initramfs/dev/console c 5 1
+```
+
+### Update path of initramfs to embed in linux kernel
 
 First get the new path:
 ```bash
