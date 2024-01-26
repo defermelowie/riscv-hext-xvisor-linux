@@ -8,6 +8,8 @@ SPIKE=spike
 LOGDIR=./log
 TARGETDIR=./target
 
+all: xvisor linux
+
 #-------------------------------------------------------------------------------
 # openSBI with Xvisor payload
 #-------------------------------------------------------------------------------
@@ -20,11 +22,11 @@ XVISOR_DTB := $(TARGETDIR)/rv64gch.dtb
 xvisor: $(XVISOR_ELF)
 
 $(XVISOR_ELF): xvisor/build/vmm.bin
-	$(MAKE) -C ./opensbi/ PLATFORM=generic CROSS_COMPILE=$(CROSS_COMPILE) FW_PAYLOAD_PATH=../$<
+	$(MAKE) -C ./opensbi/ PLATFORM=generic CROSS_COMPILE=$(CROSS_COMPILE) FW_PAYLOAD_PATH=../$< -j$$(nproc)
 	cp opensbi/build/platform/generic/firmware/fw_payload.elf $@
 
 xvisor/build/vmm.bin: xvisor/build/openconf/.config
-	$(MAKE) -C ./xvisor/ ARCH=riscv CROSS_COMPILE=$(CROSS_COMPILE) -j$(nproc)
+	$(MAKE) -C ./xvisor/ ARCH=riscv CROSS_COMPILE=$(CROSS_COMPILE) -j$$(nproc)
 
 xvisor/build/openconf/.config: $(XVISOR_CONFIG)
 	cp $< ./xvisor/arch/riscv/configs/
@@ -67,7 +69,7 @@ LINUX_DTB := $(TARGETDIR)/rv64gch.dtb
 linux: $(LINUX_ELF) $(LINUX_INITRAMFS)
 
 $(LINUX_ELF): linux/build/arch/riscv/boot/Image
-	$(MAKE) -C ./opensbi/ PLATFORM=generic CROSS_COMPILE=$(CROSS_COMPILE) FW_PAYLOAD_PATH=../$<
+	$(MAKE) -C ./opensbi/ PLATFORM=generic CROSS_COMPILE=$(CROSS_COMPILE) FW_PAYLOAD_PATH=../$< -j$$(nproc)
 	cp opensbi/build/platform/generic/firmware/fw_payload.elf $@
 
 linux/build/arch/riscv/boot/Image: linux/build/.config $(LINUX_INITRAMFS)
@@ -83,7 +85,7 @@ $(LINUX_INITRAMFS): busybox/busybox initramfs/*
 
 busybox/busybox: busybox-config
 	cp busybox-config busybox/.config
-	$(MAKE) -C busybox ARCH=riscv CROSS_COMPILE=riscv64-unknown-linux-gnu- -j 8
+	$(MAKE) -C busybox ARCH=riscv CROSS_COMPILE=riscv64-unknown-linux-gnu- -j$$(nproc)
 
 #-------------------------------------------------------------------------------
 
