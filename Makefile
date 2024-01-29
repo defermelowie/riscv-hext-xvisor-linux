@@ -16,7 +16,7 @@ all: xvisor linux
 
 XVISOR_CONFIG := xvisor-sail-64b-defconfig
 XVISOR_ELF := $(TARGETDIR)/opensbi_xvisor_payload.elf
-XVISOR_DTB := $(TARGETDIR)/rv64gch.dtb
+XVISOR_DTB := $(TARGETDIR)/rv64gch-host.dtb
 
 .PHONY: xvisor
 xvisor: $(XVISOR_ELF)
@@ -42,7 +42,7 @@ xvisor-csim: $(XVISOR_ELF) $(XVISOR_DTB)
 
 .PHONY: xvisor-spike
 xvisor-spike: $(XVISOR_ELF) $(XVISOR_DTB)
-	$(SPIKE) --isa rv64gch -m512 --dtb=$(XVISOR_DTB) $<
+	$(SPIKE) --isa rv64gch_zbb_zicsr -m512 --dtb=$(XVISOR_DTB) $<
 
 # For debug purposes only
 .PHONY: xvisor-qemu
@@ -56,7 +56,7 @@ xvisor-qemu: $(XVISOR_ELF)
 LINUX_CONFIG := linux-sail-64b_defconfig
 LINUX_ELF := $(TARGETDIR)/opensbi_linux_payload.elf
 LINUX_INITRAMFS := $(TARGETDIR)/initramfs.cpio
-LINUX_DTB := $(TARGETDIR)/rv64gch.dtb
+LINUX_DTB := $(TARGETDIR)/rv64gch-host.dtb
 
 # # Debug target: modify linux-sail-64b_defconfig using menuconfig
 # .PHONY: linuxconfig
