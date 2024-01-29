@@ -22,8 +22,13 @@
       riscv,isa-base = "rv64i";
       riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "h", "zbb", "zicntr", "zicsr";
       mmu-type = "riscv,sv48";
+      riscv,pmpregions = <16>;
+      riscv,pmpgranularity = <4>;
       clock-frequency = <1000000000>;
       CPU0_intc: interrupt-controller {
+    stdout-path = &HTIF;
+    bootargs = "earlycon=sbi console=hvc";
+        #address-cells = <2>;
         #interrupt-cells = <1>;
         interrupt-controller;
         compatible = "riscv,cpu-intc";

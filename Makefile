@@ -16,7 +16,7 @@ all: xvisor linux
 
 XVISOR_CONFIG := xvisor-sail-64b-defconfig
 XVISOR_ELF := $(TARGETDIR)/opensbi_xvisor_payload.elf
-XVISOR_DTB := $(TARGETDIR)/rv64gch-host.dtb
+XVISOR_DTB := $(TARGETDIR)/rv64gch_xvisor.dtb
 
 .PHONY: xvisor
 xvisor: $(XVISOR_ELF)
@@ -55,8 +55,8 @@ xvisor-qemu: $(XVISOR_ELF)
 
 LINUX_CONFIG := linux-sail-64b_defconfig
 LINUX_ELF := $(TARGETDIR)/opensbi_linux_payload.elf
-LINUX_INITRAMFS := $(TARGETDIR)/initramfs.cpio
-LINUX_DTB := $(TARGETDIR)/rv64gch-host.dtb
+LINUX_INITRAMFS := $(TARGETDIR)/linux_initramfs.cpio
+LINUX_DTB := $(TARGETDIR)/rv64gch_linux.dtb
 
 # # Debug target: modify linux-sail-64b_defconfig using menuconfig
 # .PHONY: linuxconfig
@@ -79,9 +79,9 @@ linux/build/.config: $(LINUX_CONFIG)
 	cp $< ./linux/arch/riscv/configs/$<
 	$(MAKE) -C linux O=build ARCH=riscv $<
 
-$(LINUX_INITRAMFS): busybox/busybox initramfs/*
-	cp busybox/busybox initramfs/bin/
-	cd initramfs && find . -print0 | cpio --null -ov --format=newc --owner root:root > ../$(LINUX_INITRAMFS)
+$(LINUX_INITRAMFS): busybox/busybox linux_initramfs/*
+	cp busybox/busybox linux_initramfs/bin/
+	cd linux_initramfs && find . -print0 | cpio --null -ov --format=newc --owner root:root > ../$(LINUX_INITRAMFS)
 
 busybox/busybox: busybox-config
 	cp busybox-config busybox/.config
@@ -121,7 +121,7 @@ $(TARGETDIR)/%.dtb: %.dts
 clean:
 	$(MAKE) -C ./opensbi/ clean
 	$(MAKE) -C busybox clean
-	rm -f ./initramfs/bin/busybox
+	rm -f ./linux_initramfs/bin/busybox
 	$(MAKE) -C ./linux/ clean
 	$(MAKE) -C linux ARCH=riscv mrproper
 	rm -f ./linux/arch/riscv/configs/$(LINUX_CONFIG)
