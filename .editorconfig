@@ -13,7 +13,7 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 
 # Follow Makefile spec.
-[Makefile]
+[{Makefile,*.mk}]
 indent_style = tab
 
 # Follow PEP8
