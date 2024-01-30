@@ -9,7 +9,7 @@ TARGETDIR=./target
 
 #-------------------------------------------------------------------------------
 
-BBOX_CONFIG  := busybox-config
+BBOX_CONFIG  := busybox_config
 LINUX_CONFIG := linux_guest_rv64_defconfig
 LINUX_INITRAMFS := $(TARGETDIR)/linux_initramfs.cpio
 LINUX_IMAGE := $(TARGETDIR)/Image
@@ -33,11 +33,11 @@ $(LINUX_IMAGE): $(LINUX_CONFIG) $(LINUX_INITRAMFS)
 	$(MAKE) -C linux O=build ARCH=riscv CROSS_COMPILE=$(CROSS_COMPILE) Image -j$$(nproc)
 	cp linux/build/arch/riscv/boot/Image $(LINUX_IMAGE)
 
-$(LINUX_INITRAMFS): $(BBOX_CONFIG) linux_initramfs/*
+$(LINUX_INITRAMFS): $(BBOX_CONFIG) disks/linux_initramfs/init
 	cp $(BBOX_CONFIG) busybox/.config
 	$(MAKE) -C busybox ARCH=riscv CROSS_COMPILE=riscv64-unknown-linux-gnu- -j$$(nproc)
-	cp busybox/busybox linux_initramfs/bin/
-	cd linux_initramfs && find . -print0 | cpio --null -ov --format=newc --owner root:root > ../$(LINUX_INITRAMFS)
+	$(MAKE) -C busybox ARCH=riscv CROSS_COMPILE=riscv64-unknown-linux-gnu- install CONFIG_PREFIX=../disks/linux_initramfs/
+	cd disks/linux_initramfs && find . -print0 | cpio --null -ov --format=newc --owner root:root > ../../$(LINUX_INITRAMFS)
 
 $(TARGETDIR)/%.dtb: %.dts
 	dtc $< > $@

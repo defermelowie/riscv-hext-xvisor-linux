@@ -1,9 +1,9 @@
 MAKEFLAGS += -r --no-print-directory
 
 LOGDIR = ./log
-TARGETDIR = ./build
+TARGETDIR = ./target
 
-all: xvisor linux
+all: setup clean xvisor
 
 #-------------------------------------------------------------------------------
 # Xvisor

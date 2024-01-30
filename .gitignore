@@ -2,10 +2,10 @@
 *.o
 *.elf
 *.dump
-busybox
 
-# Root file system archive
+# Root file system
 *.cpio
+!.gitkeep
 
 # Log files
 *.log
