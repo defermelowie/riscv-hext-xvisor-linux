@@ -70,12 +70,16 @@ csim: $(XVISOR_ELF) $(XVISOR_DTB)
 	--enable-dirty-update --enable-pmp --mtval-has-illegal-inst-bits --xtinst-has-transformed-inst \
 	--ram-size 512 --device-tree-blob $(XVISOR_DTB) $<
 
-spike: $(XVISOR_ELF) $(XVISOR_DTB)
-	$(SPIKE) --isa rv64gchv_zbb_zicsr -m512 --dtb=$(XVISOR_DTB) $<
+spike: $(XVISOR_BIN) $(XVISOR_INITRD) $(XVISOR_DTB)
+	$(SPIKE) --isa rv64gchv_zbb_zicsr -m512 \
+	--initrd=$(XVISOR_INITRD) --dtb=$(XVISOR_DTB) $(XVISOR_ELF)
+
+# spike: $(XVISOR_ELF) $(XVISOR_DTB)
+# 	$(SPIKE) --isa rv64gchv_zbb_zicsr -m512 --dtb=$(XVISOR_DTB) $<
 
 # For debug purposes only
 qemu: $(XVISOR_BIN) $(XVISOR_INITRD) $(XVISOR_ELF)
 	$(QEMU) -machine virt -cpu rv64,h=true -nographic -m 512M \
-	-bios opensbi/build/platform/generic/firmware/fw_jump.bin \
+	-append 'vmm.bootcmd="vfs mount initrd /;vfs run /boot.xscript"' \
 	-kernel $(XVISOR_BIN) -initrd $(XVISOR_INITRD) \
-	-append 'vmm.bootcmd="vfs mount initrd /;vfs run /boot.xscript"'
+	-bios opensbi/build/platform/generic/firmware/fw_jump.bin

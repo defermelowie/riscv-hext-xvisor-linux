@@ -26,8 +26,6 @@
       riscv,pmpgranularity = <4>;
       clock-frequency = <1000000000>;
       CPU0_intc: interrupt-controller {
-    stdout-path = &HTIF;
-    bootargs = "earlycon=sbi console=hvc";
         #address-cells = <2>;
         #interrupt-cells = <1>;
         interrupt-controller;

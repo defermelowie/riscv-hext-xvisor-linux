@@ -8,8 +8,8 @@
   chosen {
     stdout-path = &HTIF;
     bootargs = "vmm.bootcmd=\"vfs mount initrd /; vfs run /boot.xscript\"";
-    linux,initrd-start = <0x82000000>;
-		linux,initrd-end   = <0x82800000>;
+    // linux,initrd-start = <0x82000000>;
+		// linux,initrd-end   = <0x82800000>;
   };
   cpus {
     #address-cells = <1>;
@@ -28,8 +28,6 @@
       riscv,pmpgranularity = <4>;
       clock-frequency = <1000000000>;
       CPU0_intc: interrupt-controller {
-    stdout-path = &HTIF;
-    bootargs = "earlycon=sbi console=hvc";
         #address-cells = <2>;
         #interrupt-cells = <1>;
         interrupt-controller;
