@@ -1,6 +1,7 @@
 # Build targets
 *.o
 *.elf
+*.bin
 *.dump
 Image
 
@@ -11,6 +12,7 @@ Image
 disks/linux_initramfs
 !.gitkeep
 *.cpio
+*.img
 
 # Log files
 *.log
