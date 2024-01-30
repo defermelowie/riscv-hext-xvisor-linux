@@ -40,7 +40,7 @@ $(TARGETDIR)/%.dtb: %.dts
 
 .PHONY: csim spike qemu
 csim: $(XVISOR_ELF) $(XVISOR_DTB)
-	$(SAIL_CSIM) -Vmem -Vplatform -Vreg -Vinstr \
+	$(CSIM) -Vmem -Vplatform -Vreg -Vinstr \
 	--enable-dirty-update --enable-pmp --mtval-has-illegal-inst-bits --xtinst-has-transformed-inst \
 	--ram-size 512 --device-tree-blob $(XVISOR_DTB) $<
 

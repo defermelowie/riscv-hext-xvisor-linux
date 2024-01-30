@@ -66,7 +66,7 @@ csim: $(LINUX_ELF) $(LINUX_DTB)
 	--ram-size 512 --device-tree-blob $(LINUX_DTB) $<
 
 spike: $(LINUX_ELF) $(LINUX_DTB)
-	$(SPIKE) --isa rv64gch_zbb_zicsr -m512 --dtb=$(LINUX_DTB) $<
+	$(SPIKE) --isa rv64gchv_zbb_zicsr -m512 --dtb=$(LINUX_DTB) $<
 
 # For debug purposes only
 qemu: $(LINUX_ELF)
