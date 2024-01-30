@@ -2,16 +2,18 @@
 *.o
 *.elf
 *.dump
-
-# Root file system
-*.cpio
-!.gitkeep
-
-# Log files
-*.log
+Image
 
 # Device tree blobs
 *.dtb
+
+# Root file system
+disks/linux_initramfs
+!.gitkeep
+*.cpio
+
+# Log files
+*.log
 
 # Editor specific
 .vscode

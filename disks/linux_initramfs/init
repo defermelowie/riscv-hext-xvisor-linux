@@ -1,9 +1,5 @@
 #!/bin/busybox sh
 
-# Make symlinks
-/bin/busybox echo "[info] Create busybox symlinks"
-/bin/busybox --install -s
-
 echo "[info] Mount devices"
 mount -t devtmpfs  devtmpfs  /dev
 mount -t proc      proc      /proc
@@ -12,8 +8,6 @@ mount -t tmpfs     tmpfs     /tmp
 
 echo "[debug] ls /"
 ls /
-echo "[debug] ls /dev"
-ls /dev
 echo "[debug] ls /bin"
 ls /bin
 
