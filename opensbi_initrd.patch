@@ -1,0 +1,40 @@
+diff --git a/firmware/fw_payload.S b/firmware/fw_payload.S
+index c53a3bb..ac35fac 100644
+--- a/firmware/fw_payload.S
++++ b/firmware/fw_payload.S
+@@ -95,3 +95,16 @@ payload_bin:
+ #else
+	 .incbin	FW_PAYLOAD_PATH
+ #endif
++
++.section .initrd, "ax", %progbits
++.align 28
++_initrd_start:
++.incbin "../target/initrd.cpio"
++_initrd_end:
++
++.section .initrd.info, "a"
++.align 4
++.globl _initrd_size
++_initrd_size:
++	.dword _initrd_end - _initrd_start
++
+diff --git a/firmware/fw_payload.elf.ldS b/firmware/fw_payload.elf.ldS
+index f1a544b..6063465 100644
+--- a/firmware/fw_payload.elf.ldS
++++ b/firmware/fw_payload.elf.ldS
+@@ -28,5 +28,14 @@ SECTIONS
+		 PROVIDE(_payload_end = .);
+	 }
+
++	.initrd.info : {
++		*(.initrd.*)
++	}
++	.initrd : {
++		PROVIDE(_initrd_start = .);
++		*(.initrd)
++		PROVIDE(_initrd_end = .);
++	}
++
+	PROVIDE(_fw_reloc_end = .);
+ }

@@ -25,7 +25,8 @@ GUEST_ROOTFS := $(TARGETDIR)/linux_initramfs.cpio
 .PHONY: build
 build: $(XVISOR_ELF)
 
-$(XVISOR_ELF): $(XVISOR_BIN)
+$(XVISOR_ELF): $(XVISOR_INITRD) $(XVISOR_BIN)
+	cd ./opensbi/ && git restore firmware && patch -p1 < ../opensbi_initrd.patch
 	$(MAKE) -C ./opensbi/ PLATFORM=generic CROSS_COMPILE=$(CROSS_COMPILE) FW_PAYLOAD_PATH=../$(XVISOR_BIN) -j$$(nproc)
 	cp opensbi/build/platform/generic/firmware/fw_payload.elf $@
 
@@ -61,6 +62,14 @@ $(TARGETDIR)/%.dtb: %.dts
 	dtc $< > $@
 
 #-------------------------------------------------------------------------------
+
+target/linux_initramfs.cpio:
+	$(MAKE) -f linux.mk $@ LINUX_CONFIG=linux_virt64_defconfig
+
+target/Image:
+	$(MAKE) -f linux.mk $@ LINUX_CONFIG=linux_virt64_defconfig
+
+#-------------------------------------------------------------------------------
 # Run on emulators
 #-------------------------------------------------------------------------------
 
@@ -70,12 +79,14 @@ csim: $(XVISOR_ELF) $(XVISOR_DTB)
 	--enable-dirty-update --enable-pmp --mtval-has-illegal-inst-bits --xtinst-has-transformed-inst \
 	--ram-size 512 --device-tree-blob $(XVISOR_DTB) $<
 
-spike: $(XVISOR_BIN) $(XVISOR_INITRD) $(XVISOR_DTB)
-	$(SPIKE) --isa rv64gchv_zbb_zicsr -m512 \
-	--initrd=$(XVISOR_INITRD) --dtb=$(XVISOR_DTB) $(XVISOR_ELF)
+spike-dtb: $(XVISOR_ELF) $(XVISOR_DTB)
+	$(SPIKE) --isa rv64gchv_zbb_zicsr -m1024 \
+	--dtb=$(XVISOR_DTB) $(XVISOR_ELF)
 
-# spike: $(XVISOR_ELF) $(XVISOR_DTB)
-# 	$(SPIKE) --isa rv64gchv_zbb_zicsr -m512 --dtb=$(XVISOR_DTB) $<
+spike-initrd: $(XVISOR_ELF) $(XVISOR_INITRD)
+	$(SPIKE) --isa rv64gchv_zbb_zicsr -m1024 \
+	--bootargs='vmm.bootcmd="vfs mount initrd /;vfs run /boot.xscript"' \
+	--initrd=$(XVISOR_INITRD) $(XVISOR_ELF)
 
 # For debug purposes only
 qemu: $(XVISOR_BIN) $(XVISOR_INITRD) $(XVISOR_ELF)

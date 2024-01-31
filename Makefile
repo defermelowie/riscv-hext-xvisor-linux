@@ -41,8 +41,9 @@ clean:
 	$(MAKE) -C linux clean
 	$(MAKE) -C linux mrproper
 	$(MAKE) -C xvisor clean
-	rm -f $(TARGETDIR)/*.dtb
-	rm -f $(TARGETDIR)/*.cpio
-	rm -f $(TARGETDIR)/*.elf
-	rm -f $(TARGETDIR)/*.dump
-	rm -f $(LOGDIR)/*.log
+	cd opensbi && git stash -u
+	cd busybox && git stash -u
+	cd linux && git stash -u
+	cd xvisor && git stash -u
+	rm -f $(TARGETDIR)/*
+	rm -f $(LOGDIR)/*

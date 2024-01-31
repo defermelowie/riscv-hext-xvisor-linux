@@ -7,9 +7,9 @@
   model = "ucbbar,spike-bare";
   chosen {
     stdout-path = &HTIF;
-    bootargs = "vmm.bootcmd=\"vfs mount initrd /; vfs run /boot.xscript\"";
-    // linux,initrd-start = <0x82000000>;
-		// linux,initrd-end   = <0x82800000>;
+    bootargs = "vmm.bootcmd=\"vfs mount initrd /;vfs run /boot.xscript\"";
+    linux,initrd-start = <0x90000000>;
+		linux,initrd-end   = <0x91045a00>;
   };
   cpus {
     #address-cells = <1>;
@@ -20,9 +20,9 @@
       reg = <0>;
       status = "okay";
       compatible = "riscv";
-      riscv,isa = "rv64imafdch";
+      riscv,isa = "rv64imafdchv_zbb_zicntr_zicsr";
       riscv,isa-base = "rv64i";
-      riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "h", "zbb", "zicntr", "zicsr";
+      riscv,isa-extensions = "i", "m", "a", "f", "d", "c", "h", "v", "zbb", "zicntr", "zicsr";
       mmu-type = "riscv,sv48";
       riscv,pmpregions = <16>;
       riscv,pmpgranularity = <4>;
@@ -37,7 +37,7 @@
   };
   memory@80000000 {
     device_type = "memory";
-    reg = <0x0 0x80000000 0x0 0x4000000>;
+    reg = <0x0 0x80000000 0x0 0x20000000>;
   };
   soc {
     #address-cells = <2>;
