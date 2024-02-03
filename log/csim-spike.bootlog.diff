@@ -1,0 +1,313 @@
+1,12c1,3
+< make -f xvisor.mk csim LOGDIR=./log TARGETDIR=./target
+< ../sail-riscv/c_emulator/riscv_sim_RV64 -Vmem -Vplatform -Vreg -Vinstr \
+< --enable-dirty-update --enable-pmp --mtval-has-illegal-inst-bits --xtinst-has-transformed-inst \
+< --ram-size 512 --device-tree-blob ./target/rv64gch_xvisor.dtb target/opensbi_xvisor_payload.elf
+< enabling dirty update.
+< enabling PMP support.
+< enabling storing illegal instruction bits in mtval.
+< enabling storing transformed instruction bits in mtinst and htinst.
+< setting ram-size to 512 MB
+< using ./target/rv64gch_xvisor.dtb as DTB file.
+< tohost located at 0x800421f8
+< fromhost located at 0x800421f0
+---
+> make -f xvisor.mk spike-dtb LOGDIR=./log TARGETDIR=./target
+> spike --isa rv64gchv_zbb_zicsr -m1024 \
+> --dtb=./target/rv64gch_xvisor.dtb ./target/opensbi_xvisor_payload.elf
+64c55
+< Boot HART ISA Extensions  : zicntr,sdtrig
+---
+> Boot HART ISA Extensions  : sdtrig
+69c60
+< Boot HART Debug Triggers  : 0 triggers
+---
+> Boot HART Debug Triggers  : 4 triggers
+249c240
+< [guest0/uart0] copy took 74913 usecs for 0x1E00000 bytes
+---
+> [guest0/uart0] copy took 75935 usecs for 0x1E00000 bytes
+253c244
+< [guest0/uart0] copy took 316 usecs for 0x020000 bytes
+---
+> [guest0/uart0] copy took 335 usecs for 0x020000 bytes
+257c248
+< [guest0/uart0] copy took 39953 usecs for 0x1000000 bytes
+---
+> [guest0/uart0] copy took 40635 usecs for 0x1000000 bytes
+359c350
+< [guest0/uart0] [    0.000000] sched_clock: 64 bits at 10MHz, resolution 100ns, wraps every 4398046511100ns
+---
+> [guest0/uart0] [    0.000005] sched_clock: 64 bits at 10MHz, resolution 100ns, wraps every 4398046511100ns
+361c352
+< [guest0/uart0] [    0.000356] Console: colour dummy device 80x25
+---
+> [guest0/uart0] [    0.003595] Console: colour dummy device 80x25
+363c354
+< [guest0/uart0] [    0.000516] Calibrating delay loop (skipped), value calculated using timer frequency.. 20.00 BogoMIPS (lpj=40000)
+---
+> [guest0/uart0] [    0.005560] Calibrating delay loop (skipped), value calculated using timer frequency.. 20.00 BogoMIPS (lpj=40000)
+365c356
+< [guest0/uart0] [    0.000847] pid_max: default: 32768 minimum: 301
+---
+> [guest0/uart0] [    0.009955] pid_max: default: 32768 minimum: 301
+367c358
+< [guest0/uart0] [    0.001039] LSM: initializing lsm=capability,integrity
+---
+> [guest0/uart0] [    0.012015] LSM: initializing lsm=capability,integrity
+369c360
+< [guest0/uart0] [    0.001250] Mount-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+---
+> [guest0/uart0] [    0.014290] Mount-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+371c362
+< [guest0/uart0] [    0.001489] Mountpoint-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+---
+> [guest0/uart0] [    0.017365] Mountpoint-cache hash table entries: 512 (order: 0, 4096 bytes, linear)
+373c364
+< [guest0/uart0] [    0.002459] RCU Tasks Trace: Setting shift to 0 and lim to 1 rcu_task_cb_adjust=1.
+---
+> [guest0/uart0] [    0.021915] RCU Tasks Trace: Setting shift to 0 and lim to 1 rcu_task_cb_adjust=1.
+375c366
+< [guest0/uart0] [    0.002754] riscv: ELF compat mode unsupported
+---
+> [guest0/uart0] [    0.025230] riscv: ELF compat mode unsupported
+377c368
+< [guest0/uart0] [    0.002762] ASID allocator using 16 bits (65536 entries)
+---
+> [guest0/uart0] [    0.025240] ASID allocator using 16 bits (65536 entries)
+379c370
+< [guest0/uart0] [    0.003167] EFI services will not be available.
+---
+> [guest0/uart0] [    0.029755] EFI services will not be available.
+381c372
+< [guest0/uart0] [    0.003491] devtmpfs: initialized
+---
+> [guest0/uart0] [    0.032025] devtmpfs: initialized
+383c374
+< [guest0/uart0] [    0.004377] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+---
+> [guest0/uart0] [    0.034325] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+385c376
+< [guest0/uart0] [    0.004692] futex hash table entries: 256 (order: 1, 12288 bytes, linear)
+---
+> [guest0/uart0] [    0.038420] futex hash table entries: 256 (order: 1, 12288 bytes, linear)
+387c378
+< [guest0/uart0] [    0.004972] pinctrl core: initialized pinctrl subsystem
+---
+> [guest0/uart0] [    0.041505] pinctrl core: initialized pinctrl subsystem
+389c380
+< [guest0/uart0] [    0.005615] cpuidle: using governor menu
+---
+> [guest0/uart0] [    0.044340] cpuidle: using governor menu
+391c382
+< [guest0/uart0] [    0.028313] cpu0: Ratio of byte access time to unaligned word access is 0.02, unaligned accesses are slow
+---
+> [guest0/uart0] [    0.371830] cpu0: Ratio of byte access time to unaligned word access is 0.00, unaligned accesses are slow
+393c384
+< [guest0/uart0] [    0.029050] platform smb: Fixed dependency cycle(s) with /smb/interrupt-controller@c000000
+---
+> [guest0/uart0] [    0.376415] platform smb: Fixed dependency cycle(s) with /smb/interrupt-controller@c000000
+395c386
+< [guest0/uart0] [    0.030485] HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+---
+> [guest0/uart0] [    0.381395] HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+397c388
+< [guest0/uart0] [    0.030707] HugeTLB: 28 KiB vmemmap can be freed for a 2.00 MiB page
+---
+> [guest0/uart0] [    0.384385] HugeTLB: 28 KiB vmemmap can be freed for a 2.00 MiB page
+399c390
+< [guest0/uart0] [    0.031144] ACPI: Interpreter disabled.
+---
+> [guest0/uart0] [    0.387430] ACPI: Interpreter disabled.
+401c392
+< [guest0/uart0] [    0.031646] SCSI subsystem initialized
+---
+> [guest0/uart0] [    0.389530] SCSI subsystem initialized
+403c394
+< [guest0/uart0] [    0.031912] usbcore: registered new interface driver usbfs
+---
+> [guest0/uart0] [    0.391400] usbcore: registered new interface driver usbfs
+405c396
+< [guest0/uart0] [    0.032114] usbcore: registered new interface driver hub
+---
+> [guest0/uart0] [    0.393885] usbcore: registered new interface driver hub
+407c398
+< [guest0/uart0] [    0.032309] usbcore: registered new device driver usb
+---
+> [guest0/uart0] [    0.396205] usbcore: registered new device driver usb
+409c400
+< [guest0/uart0] [    0.032760] vgaarb: loaded
+---
+> [guest0/uart0] [    0.398755] vgaarb: loaded
+411c402
+< [guest0/uart0] [    0.032945] clocksource: Switched to clocksource riscv_clocksource
+---
+> [guest0/uart0] [    0.400155] clocksource: Switched to clocksource riscv_clocksource
+413c404
+< [guest0/uart0] [    0.033350] pnp: PnP ACPI: disabled
+---
+> [guest0/uart0] [    0.403200] pnp: PnP ACPI: disabled
+415c406
+< [guest0/uart0] [    0.039177] PCI: CLS 0 bytes, default 64
+---
+> [guest0/uart0] [    0.412945] PCI: CLS 0 bytes, default 64
+417c408
+< [guest0/uart0] [    0.039685] Unpacking initramfs...
+---
+> [guest0/uart0] [    0.415135] Unpacking initramfs...
+419c410
+< [guest0/uart0] [    0.487575] Freeing initrd memory: 16384K
+---
+> [guest0/uart0] [    0.869030] Freeing initrd memory: 16384K
+421c412
+< [guest0/uart0] [    0.487742] workingset: timestamp_bits=46 max_order=16 bucket_order=0
+---
+> [guest0/uart0] [    0.871145] workingset: timestamp_bits=46 max_order=16 bucket_order=0
+423c414
+< [guest0/uart0] [    0.488347] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 246)
+---
+> [guest0/uart0] [    0.874450] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 246)
+425c416
+< [guest0/uart0] [    0.488588] io scheduler mq-deadline registered
+---
+> [guest0/uart0] [    0.877690] io scheduler mq-deadline registered
+427c418
+< [guest0/uart0] [    0.488743] io scheduler kyber registered
+---
+> [guest0/uart0] [    0.879685] io scheduler kyber registered
+429c420
+< [guest0/uart0] [    0.488893] io scheduler bfq registered
+---
+> [guest0/uart0] [    0.881475] io scheduler bfq registered
+431c422
+< [guest0/uart0] [    0.489268] simple-framebuffer 50000000.simplefb: framebuffer at 0x50000000, 0x1000000 bytes
+---
+> [guest0/uart0] [    0.883445] simple-framebuffer 50000000.simplefb: framebuffer at 0x50000000, 0x1000000 bytes
+433c424
+< [guest0/uart0] [    0.489542] simple-framebuffer 50000000.simplefb: format=a8r8g8b8, mode=1600x900x32, linelength=6400
+---
+> [guest0/uart0] [    0.887100] simple-framebuffer 50000000.simplefb: format=a8r8g8b8, mode=1600x900x32, linelength=6400
+435c426
+< [guest0/uart0] [    0.503352] Console: switching to colour frame buffer device 200x56
+---
+> [guest0/uart0] [    0.904590] Console: switching to colour frame buffer device 200x56
+437c428
+< [guest0/uart0] [    0.515690] simple-framebuffer 50000000.simplefb: fb0: simplefb registered!
+---
+> [guest0/uart0] [    0.919705] simple-framebuffer 50000000.simplefb: fb0: simplefb registered!
+439c430
+< [guest0/uart0] [    0.516736] virtio_rpmsg_bus virtio2: rpmsg host is online
+---
+> [guest0/uart0] [    0.924270] virtio_rpmsg_bus virtio2: rpmsg host is online
+441c432
+< [guest0/uart0] [    0.517774] input: Xvisor VirtIO Input as /devices/platform/smb/20004000.virtio_input/virtio3/input/input0
+---
+> [guest0/uart0] [    0.930685] input: Xvisor VirtIO Input as /devices/platform/smb/20004000.virtio_input/virtio3/input/input0
+443c434
+< [guest0/uart0] [    0.552821] Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+---
+> [guest0/uart0] [    0.985185] Serial: 8250/16550 driver, 4 ports, IRQ sharing disabled
+445c436
+< [guest0/uart0] [    0.554234] printk: legacy console [ttyS0] disabled
+---
+> [guest0/uart0] [    0.989485] printk: legacy console [ttyS0] disabled
+447c438
+< [guest0/uart0] [    0.554597] 10000000.uart: ttyS0 at MMIO 0x10000000 (irq = 4, base_baud = 230400) is a 16550A
+---
+> [guest0/uart0] [    0.991875] 10000000.uart: ttyS0 at MMIO 0x10000000 (irq = 4, base_baud = 230400) is a 16550A
+449c440
+< [guest0/uart0] [    0.554888] printk: legacy console [ttyS0] enabled
+---
+> [guest0/uart0] [    0.995610] printk: legacy console [ttyS0] enabled
+451c442
+< [guest0/uart0] [    0.554888] printk: legacy console [ttyS0] enabled
+---
+> [guest0/uart0] [    0.995610] printk: legacy console [ttyS0] enabled
+453c444
+< [guest0/uart0] [    0.555215] printk: legacy bootconsole [uart8250] disabled
+---
+> [guest0/uart0] [    0.999940] printk: legacy bootconsole [uart8250] disabled
+455c446
+< [guest0/uart0] [    0.555215] printk: legacy bootconsole [uart8250] disabled
+---
+> [guest0/uart0] [    0.999940] printk: legacy bootconsole [uart8250] disabled
+457c448
+< [guest0/uart0] [    0.560266] loop: module loaded
+---
+> [guest0/uart0] [    1.010650] loop: module loaded
+459c450
+< [guest0/uart0] [    0.560418] virtio_blk virtio0: 1/0/0 default/read/poll queues
+---
+> [guest0/uart0] [    1.012370] virtio_blk virtio0: 1/0/0 default/read/poll queues
+461c452
+< [guest0/uart0] [    0.560735] virtio_blk virtio0: [vda] 0 512-byte logical blocks (0 B/0 B)
+---
+> [guest0/uart0] [    1.015345] virtio_blk virtio0: [vda] 0 512-byte logical blocks (0 B/0 B)
+463c454
+< [guest0/uart0] [    0.561935] usbcore: registered new interface driver uas
+---
+> [guest0/uart0] [    1.019570] usbcore: registered new interface driver uas
+465c456
+< [guest0/uart0] [    0.562139] usbcore: registered new interface driver usb-storage
+---
+> [guest0/uart0] [    1.021960] usbcore: registered new interface driver usb-storage
+467c458
+< [guest0/uart0] [    0.562524] mousedev: PS/2 mouse device common for all mice
+---
+> [guest0/uart0] [    1.024880] mousedev: PS/2 mouse device common for all mice
+469c460
+< [guest0/uart0] [    0.562931] goldfish_rtc 10003000.rtc: registered as rtc0
+---
+> [guest0/uart0] [    1.027805] goldfish_rtc 10003000.rtc: registered as rtc0
+471c462
+< [guest0/uart0] [    0.563122] goldfish_rtc 10003000.rtc: setting system clock to 1970-01-01T00:00:00 UTC (0)
+---
+> [guest0/uart0] [    1.030545] goldfish_rtc 10003000.rtc: setting system clock to 1970-01-01T00:00:01 UTC (1)
+473c464
+< [guest0/uart0] [    0.563657] sdhci: Secure Digital Host Controller Interface driver
+---
+> [guest0/uart0] [    1.034390] sdhci: Secure Digital Host Controller Interface driver
+475c466
+< [guest0/uart0] [    0.563867] sdhci: Copyright(c) Pierre Ossman
+---
+> [guest0/uart0] [    1.037105] sdhci: Copyright(c) Pierre Ossman
+477c468
+< [guest0/uart0] [    0.564038] Synopsys Designware Multimedia Card Interface Driver
+---
+> [guest0/uart0] [    1.039190] Synopsys Designware Multimedia Card Interface Driver
+479c470
+< [guest0/uart0] [    0.564269] sdhci-pltfm: SDHCI platform and OF driver helper
+---
+> [guest0/uart0] [    1.041865] sdhci-pltfm: SDHCI platform and OF driver helper
+481c472
+< [guest0/uart0] [    0.564569] usbcore: registered new interface driver usbhid
+---
+> [guest0/uart0] [    1.044485] usbcore: registered new interface driver usbhid
+483c474
+< [guest0/uart0] [    0.564760] usbhid: USB HID core driver
+---
+> [guest0/uart0] [    1.046955] usbhid: USB HID core driver
+485c476
+< [guest0/uart0] [    0.578830] debug_vm_pgtable: [debug_vm_pgtable         ]: Validating architecture page table helpers
+---
+> [guest0/uart0] [    1.063340] debug_vm_pgtable: [debug_vm_pgtable         ]: Validating architecture page table helpers
+487c478
+< [guest0/uart0] [    0.579476] Legacy PMU implementation is available
+---
+> [guest0/uart0] [    1.067780] Legacy PMU implementation is available
+489c480
+< [guest0/uart0] [    0.579706] clk: Disabling unused clocks
+---
+> [guest0/uart0] [    1.070100] clk: Disabling unused clocks
+491c482
+< [guest0/uart0] [    0.580615] Freeing unused kernel image (initmem) memory: 2172K
+---
+> [guest0/uart0] [    1.073305] Freeing unused kernel image (initmem) memory: 2172K
+493c484
+< [guest0/uart0] [    0.580769] Run /init as init process
+---
+> [guest0/uart0] [    1.074990] Run /init as init process
+507c498
+< [guest0/uart0] ����������������������������������������������������������������[1;36mash[m            [1;36mecho[m           [1;36mlink[m           [1;36mnice[m           [1;36msh[m
+---
+> [guest0/uart0] [1;36mash[m            [1;36mecho[m           [1;36mlink[m           [1;36mnice[m           [1;36msh[m
