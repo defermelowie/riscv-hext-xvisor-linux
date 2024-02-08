@@ -21,7 +21,7 @@ LINUX_DTB   := $(TARGETDIR)/rv64gch_linux.dtb
 #-------------------------------------------------------------------------------
 
 .PHONY: build
-build: $(LINUX_ELF)
+build: $(LINUX_ELF) $(LINUX_DTB)
 
 $(LINUX_ELF): $(LINUX_IMAGE)
 	$(MAKE) -C ./opensbi/ PLATFORM=generic CROSS_COMPILE=$(CROSS_COMPILE) FW_PAYLOAD_PATH=../$(LINUX_IMAGE) -j$$(nproc)
@@ -35,8 +35,8 @@ $(LINUX_IMAGE): $(LINUX_CONFIG) $(LINUX_INITRAMFS)
 
 $(LINUX_INITRAMFS): $(BBOX_CONFIG) disks/linux_initramfs/init
 	cp $(BBOX_CONFIG) busybox/.config
-	$(MAKE) -C busybox ARCH=riscv CROSS_COMPILE=riscv64-unknown-linux-gnu- -j$$(nproc)
-	$(MAKE) -C busybox ARCH=riscv CROSS_COMPILE=riscv64-unknown-linux-gnu- install CONFIG_PREFIX=../disks/linux_initramfs/
+	$(MAKE) -C busybox ARCH=riscv CROSS_COMPILE=$(CROSS_COMPILE) -j$$(nproc)
+	$(MAKE) -C busybox ARCH=riscv CROSS_COMPILE=$(CROSS_COMPILE) install CONFIG_PREFIX=../disks/linux_initramfs/
 	cd disks/linux_initramfs && find . -print0 | cpio --null -ov --format=newc --owner root:root > ../../$(LINUX_INITRAMFS)
 
 $(TARGETDIR)/%.dtb: %.dts

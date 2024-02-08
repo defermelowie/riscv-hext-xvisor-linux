@@ -23,7 +23,7 @@ GUEST_ROOTFS := $(TARGETDIR)/linux_initramfs.cpio
 #-------------------------------------------------------------------------------
 
 .PHONY: build
-build: $(XVISOR_ELF)
+build: $(XVISOR_ELF) $(LINUX_DTB)
 
 $(XVISOR_ELF): $(XVISOR_INITRD) $(XVISOR_BIN)
 	cd ./opensbi/ && git restore firmware && patch -p1 < ../opensbi_initrd.patch
@@ -64,10 +64,10 @@ $(TARGETDIR)/%.dtb: %.dts
 #-------------------------------------------------------------------------------
 
 target/linux_initramfs.cpio:
-	$(MAKE) -f linux.mk $@ LINUX_CONFIG=linux_virt64_defconfig
+	$(MAKE) -f linux.mk $@ LINUX_CONFIG=linux_virt64_defconfig CROSS_COMPILE=$(CROSS_COMPILE)
 
 target/Image:
-	$(MAKE) -f linux.mk $@ LINUX_CONFIG=linux_virt64_defconfig
+	$(MAKE) -f linux.mk $@ LINUX_CONFIG=linux_virt64_defconfig CROSS_COMPILE=$(CROSS_COMPILE)
 
 #-------------------------------------------------------------------------------
 # Run on emulators
