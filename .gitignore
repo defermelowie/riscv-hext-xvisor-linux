@@ -16,6 +16,7 @@ disks/linux_initramfs
 
 # Log files
 *.log
+*.txt
 
 # Editor specific
 .vscode

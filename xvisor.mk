@@ -23,7 +23,7 @@ GUEST_ROOTFS := $(TARGETDIR)/linux_initramfs.cpio
 #-------------------------------------------------------------------------------
 
 .PHONY: build
-build: $(XVISOR_ELF) $(LINUX_DTB)
+build: $(XVISOR_ELF) $(LINUX_DTB) $(TARGETDIR)/initrd_grep.txt
 
 $(XVISOR_ELF): $(XVISOR_INITRD) $(XVISOR_BIN)
 	cd ./opensbi/ && git restore firmware && patch -p1 < ../opensbi_initrd.patch
@@ -94,3 +94,10 @@ qemu: $(XVISOR_BIN) $(XVISOR_INITRD) $(XVISOR_ELF)
 	-append 'vmm.bootcmd="vfs mount initrd /;vfs run /boot.xscript"' \
 	-kernel $(XVISOR_BIN) -initrd $(XVISOR_INITRD) \
 	-bios opensbi/build/platform/generic/firmware/fw_jump.bin
+
+#-------------------------------------------------------------------------------
+# Support
+#-------------------------------------------------------------------------------
+
+$(TARGETDIR)/initrd_grep.txt: $(XVISOR_ELF)
+	$(CROSS_COMPILE)objdump -x $(XVISOR_ELF) | grep _initrd_ > $@
