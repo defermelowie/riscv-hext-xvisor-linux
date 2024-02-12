@@ -34,6 +34,25 @@ jobs:
       - name: Archive linux binaries
         uses: actions/upload-artifact@v4
         with:
+          name: linux-binaries
           path: |
             ./target/opensbi_linux_payload.elf
             ./target/rv64gch_linux.dtb
+
+  run-spike:
+
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/defermelowie/riscv-hext-ci-env/spike:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+
+    steps:
+      - name: Download linux binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-binaries
+
+      - name: Run on spike
+        run: echo "exit" | spike --isa rv64gcvh_zbb_zicsr -m512 --dtb=target/rv64gch_xvisor.dtb target/opensbi_xvisor_payload.elf
