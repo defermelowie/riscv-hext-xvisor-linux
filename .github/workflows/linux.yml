@@ -1,0 +1,39 @@
+name: Build & run linux (on openSBI)
+
+on:
+  push:
+    branches: [ "*" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/defermelowie/riscv-hext-ci-env/toolchain:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Install build dependencies
+        run: apt-get install cpio bison flex bc device-tree-compiler -y
+
+      - name: Setup directory structure
+        run: make setup
+
+      - name: Build linux
+        run: make -f linux.mk build CROSS_COMPILE=riscv64-linux-gnu-
+
+      - name: Archive linux binaries
+        uses: actions/upload-artifact@v4
+        with:
+          path: |
+            ./target/opensbi_linux_payload.elf
+            ./target/rv64gch_linux.dtb
