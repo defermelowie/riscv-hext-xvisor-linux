@@ -31,7 +31,10 @@ jobs:
     - name: Build xvisor
       run: make -f xvisor.mk build CROSS_COMPILE=riscv64-linux-gnu-
 
-    - name: Archive xvisor blobs
+    - name: Archive xvisor elf
       uses: actions/upload-artifact@v4
       with:
-        path: ./target/**
+        path: |
+          ./target/opensbi_xvisor_payload.elf
+          ./rv64gch_xvisor.dts
+          ./stdin
