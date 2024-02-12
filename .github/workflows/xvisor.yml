@@ -1,4 +1,4 @@
-name: Build xvisor
+name: Build & run xvisor
 
 on:
   push:
@@ -34,7 +34,26 @@ jobs:
     - name: Archive xvisor binaries
       uses: actions/upload-artifact@v4
       with:
+        name: xvisor-binaries
         path: |
           ./target/opensbi_xvisor_payload.elf
           ./target/rv64gch_xvisor.dtb
-          ./stdin
+
+  spike-run:
+    needs: build
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/defermelowie/riscv-hext-ci-env/spike:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+
+    steps:
+      - name: Download xvisor elf
+        uses: actions/download-artifact@v4
+        with:
+          name: xvisor-binaries
+
+      - name: Run on spike
+        run: echo "autoexec" | spike --isa rv64gcvh_zbb_zicsr -m1024 --dtb=rv64gch_xvisor.dtb opensbi_xvisor_payload.elf
+        timeout-minutes: 10

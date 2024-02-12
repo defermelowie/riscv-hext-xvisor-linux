@@ -1,5 +1,9 @@
 # RISC-V Hypervisors
 
+[![Xvisor](https://github.com/defermelowie/riscv-hext-xvisor-linux/actions/workflows/xvisor.yml/badge.svg)](https://github.com/defermelowie/riscv-hext-xvisor-linux/actions/workflows/xvisor.yml)
+
+[![Linux](https://github.com/defermelowie/riscv-hext-xvisor-linux/actions/workflows/linux.yml/badge.svg)](https://github.com/defermelowie/riscv-hext-xvisor-linux/actions/workflows/linux.yml)
+
 > For testing hypervisor extension support in the Sail model
 
 ## Initial setup
