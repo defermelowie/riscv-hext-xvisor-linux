@@ -9,7 +9,7 @@
     stdout-path = &HTIF;
     bootargs = "vmm.bootcmd=\"vfs mount initrd /;vfs run /boot.xscript\"";
     linux,initrd-start = <0x90000000>;
-		linux,initrd-end   = <0x91045a00>;
+    linux,initrd-end   = <0x91045a00>;
   };
   cpus {
     #address-cells = <1>;

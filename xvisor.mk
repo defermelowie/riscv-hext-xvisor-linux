@@ -30,7 +30,7 @@ $(XVISOR_ELF): $(XVISOR_INITRD) $(XVISOR_BIN)
 	$(MAKE) -C ./opensbi/ PLATFORM=generic CROSS_COMPILE=$(CROSS_COMPILE) FW_PAYLOAD_PATH=../$(XVISOR_BIN) -j$$(nproc)
 	cp opensbi/build/platform/generic/firmware/fw_payload.elf $@
 
-$(XVISOR_INITRD): xvisor_guest.dts xvisor_linux.dts $(GUEST_IMAGE) $(GUEST_ROOTFS)
+$(XVISOR_INITRD): xvisor_guest.dts xvisor_linux.dts disks/xvisor_initrd/boot.xscript $(GUEST_IMAGE) $(GUEST_ROOTFS)
 # DEBUG: Delete existing structure & create new one from scratch
 # rm -rf ./disks/xvisor_initrd/*
 # mkdir -p ./disks/xvisor_initrd/tmp
@@ -77,7 +77,7 @@ target/Image:
 csim: $(XVISOR_ELF) $(XVISOR_DTB)
 	$(CSIM) -Vmem -Vplatform -Vreg -Vinstr \
 	--enable-dirty-update --enable-pmp --mtval-has-illegal-inst-bits --xtinst-has-transformed-inst \
-	--ram-size 512 --device-tree-blob $(XVISOR_DTB) $<
+	--ram-size 1024 --device-tree-blob $(XVISOR_DTB) $<
 
 spike-dtb: $(XVISOR_ELF) $(XVISOR_DTB)
 	$(SPIKE) --isa rv64gchv_zbb_zicsr -m1024 \
