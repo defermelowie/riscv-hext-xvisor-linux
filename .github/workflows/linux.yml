@@ -41,6 +41,7 @@ jobs:
 
   run-spike:
 
+    needs: build
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/defermelowie/riscv-hext-ci-env/spike:latest
