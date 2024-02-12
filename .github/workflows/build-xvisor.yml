@@ -36,5 +36,5 @@ jobs:
       with:
         path: |
           ./target/opensbi_xvisor_payload.elf
-          ./rv64gch_xvisor.dts
+          ./target/rv64gch_xvisor.dtb
           ./stdin

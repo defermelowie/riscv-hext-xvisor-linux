@@ -23,7 +23,7 @@ GUEST_ROOTFS := $(TARGETDIR)/linux_initramfs.cpio
 #-------------------------------------------------------------------------------
 
 .PHONY: build
-build: $(XVISOR_ELF) $(LINUX_DTB) $(TARGETDIR)/initrd_grep.txt
+build: $(XVISOR_ELF) $(XVISOR_DTB)
 
 $(XVISOR_ELF): $(XVISOR_INITRD) $(XVISOR_BIN)
 	cd ./opensbi/ && git restore firmware && patch -p1 < ../opensbi_initrd.patch
@@ -99,5 +99,10 @@ qemu: $(XVISOR_BIN) $(XVISOR_INITRD) $(XVISOR_ELF)
 # Support
 #-------------------------------------------------------------------------------
 
-$(TARGETDIR)/initrd_grep.txt: $(XVISOR_ELF)
-	$(CROSS_COMPILE)objdump -x $(XVISOR_ELF) | grep _initrd_ > $@
+# Auto update initrd field in device tree
+rv64gch_xvisor.dts: $(XVISOR_ELF)
+	$(CROSS_COMPILE)objdump -x $(XVISOR_ELF) | grep -F "_initrd_" | sed -n -E "s/^0+([0-f]+) l +\.initrd\t0+/0x\1/p" > $(TARGETDIR)/initrd_labels.txt
+	INITRD_START=$$(cat $(TARGETDIR)/initrd_labels.txt | sed -n -E "s/^(0x[0-f]+) _initrd_start/\1/p"); \
+	sed -i -e "s/0x90000000/$$INITRD_START/g" $@
+	INITRD_END=$$(cat $(TARGETDIR)/initrd_labels.txt | sed -n -E "s/^(0x[0-f]+) _initrd_end/\1/p"); \
+	sed -i -e "s/0x91045a00/$$INITRD_END/g" $@
