@@ -10,7 +10,7 @@ TARGETDIR=./target
 #-------------------------------------------------------------------------------
 
 BBOX_CONFIG  := busybox_config
-LINUX_CONFIG := linux_guest_rv64_defconfig
+LINUX_CONFIG := linux_rv64_defconfig
 LINUX_INITRAMFS := $(TARGETDIR)/linux_initramfs.cpio
 LINUX_IMAGE := $(TARGETDIR)/Image
 LINUX_ELF   := $(TARGETDIR)/opensbi_linux_payload.elf
