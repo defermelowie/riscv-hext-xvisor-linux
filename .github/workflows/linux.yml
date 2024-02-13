@@ -56,4 +56,4 @@ jobs:
           name: linux-binaries
 
       - name: Run on spike
-        run: echo "exit" | spike --isa rv64gcvh_zbb_zicsr -m512 --dtb=target/rv64gch_xvisor.dtb target/opensbi_xvisor_payload.elf
+        run: echo "exit" | spike --isa rv64gcvh_zbb_zicsr -m512 --dtb=target/rv64gch_linux.dtb target/opensbi_linux_payload.elf
