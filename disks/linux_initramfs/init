@@ -6,20 +6,16 @@ mount -t proc      proc      /proc
 mount -t sysfs     sysfs     /sys
 mount -t tmpfs     tmpfs     /tmp
 
-echo "[debug] ls /"
-ls /
-echo "[debug] ls /bin"
-ls /bin
-# echo "[debug] ls /dev"
-# ls /dev
+echo "[info] Run test script"
+/home/test.sh
 
 # Busybox TTY fix
 echo "[info] Launch shell"
-# setsid cttyhack sh
-setsid sh -c 'sh </dev/hvc0 >/dev/hvc0 2>&1'
+setsid cttyhack sh
+# setsid sh -c 'sh </dev/hvc0 >/dev/hvc0 2>&1'
 
 # # https://git.busybox.net/busybox/tree/docs/mdev.txt?h=1_32_stable
-# echo /sbin/mdev > /proc/sys/kernel/hotplug
-# mdev -s
+echo /sbin/mdev > /proc/sys/kernel/hotplug
+mdev -s
 
 poweroff -f
