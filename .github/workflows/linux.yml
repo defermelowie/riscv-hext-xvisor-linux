@@ -40,6 +40,44 @@ jobs:
             ./target/rv64gch_linux.dtb
           if-no-files-found: error
 
+  build-sim:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install dependencies
+        run: sudo apt-get install zlib1g-dev pkg-config libgmp-dev z3 -y
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup ocaml
+        uses: ocaml/setup-ocaml@v2
+        with:
+          ocaml-compiler: "5.1"
+
+      - name: Install sail
+        run: |
+          opam init --disable-sandboxing -y
+          opam install sail -y
+
+      - name: Build sail emulators
+        run: |
+          eval $(opam env)
+          cd sim/sail
+          make csim ARCH=RV64
+          make osim ARCH=RV64
+
+      - name: Archive emulator binaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: sail-emulators
+          path: |
+            sim/sail/c_emulator/riscv_sim_RV64
+            sim/sail/ocaml_emulator/riscv_ocaml_sim_RV64
+
   run-spike:
 
     needs: build-linux
@@ -57,21 +95,27 @@ jobs:
           name: linux-binaries
 
       - name: Run on spike
-        run: echo "exit" | spike --isa rv64gcvh_zbb_zicsr -m512 --dtb=rv64gch_linux.dtb opensbi_linux_payload.elf
+        run: spike --isa rv64gcvh_zbb_zicsr -m512 --dtb=rv64gch_linux.dtb opensbi_linux_payload.elf
 
   run-csim:
 
-    needs: build-linux
+    needs: [build-linux, build-sim]
     runs-on: ubuntu-latest
 
     steps:
-      - name: Build csim
-        run: echo "[TODO] Build csim"
+      - name: Download emulator binaries
+        uses: actions/download-artifact@v4
+        with:
+          name: sail-emulators
 
       - name: Download linux binaries
         uses: actions/download-artifact@v4
         with:
           name: linux-binaries
+      - run: chmod +x c_emulator/riscv_sim_RV64 & chmod +x ocaml_emulator/riscv_ocaml_sim_RV64
 
       - name: Run on csim
-        run: echo "[TODO] Run linux on csim"
+        run: >
+          c_emulator/riscv_sim_RV64 -Vmem -Vplatform -Vreg -Vinstr
+          --enable-dirty-update --enable-pmp --mtval-has-illegal-inst-bits --xtinst-has-transformed-inst
+          --ram-size 512 --device-tree-blob rv64gch_linux.dtb opensbi_linux_payload.elf
