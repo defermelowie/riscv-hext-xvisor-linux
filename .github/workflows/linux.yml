@@ -83,7 +83,7 @@ jobs:
     needs: build-linux
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/defermelowie/riscv-hext-ci-env/spike:v1.0.5
+      image: ghcr.io/defermelowie/riscv-hext-ci-env/spike:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
@@ -108,11 +108,15 @@ jobs:
         with:
           name: sail-emulators
 
+      - name: Mark emulator binaries executable
+        run: |
+          chmod +x c_emulator/riscv_sim_RV64
+          chmod +x ocaml_emulator/riscv_ocaml_sim_RV64
+
       - name: Download linux binaries
         uses: actions/download-artifact@v4
         with:
           name: linux-binaries
-      - run: chmod +x c_emulator/riscv_sim_RV64 & chmod +x ocaml_emulator/riscv_ocaml_sim_RV64
 
       - name: Run on csim
         run: >
