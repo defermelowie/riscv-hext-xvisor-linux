@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-xvisor:
 
     runs-on: ubuntu-latest
     container:
@@ -38,9 +38,10 @@ jobs:
         path: |
           ./target/opensbi_xvisor_payload.elf
           ./target/rv64gch_xvisor.dtb
+        if-no-files-found: error
 
-  spike-run:
-    needs: build
+  run-spike:
+    needs: build-xvisor
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/defermelowie/riscv-hext-ci-env/spike:latest
