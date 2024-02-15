@@ -1,6 +1,6 @@
 CROSS_COMPILE=riscv64-unknown-linux-gnu-
 
-CSIM=../sail-riscv/c_emulator/riscv_sim_RV64
+CSIM=sim/sail/c_emulator/riscv_sim_RV64
 QEMU=qemu-system-riscv64
 SPIKE=spike
 
