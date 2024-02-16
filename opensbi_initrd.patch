@@ -10,7 +10,7 @@ index c53a3bb..ac35fac 100644
 +.section .initrd, "ax", %progbits
 +.align 28
 +_initrd_start:
-+.incbin "../target/initrd.cpio"
++.incbin "../target/xvisor_initrd.cpio"
 +_initrd_end:
 +
 +.section .initrd.info, "a"

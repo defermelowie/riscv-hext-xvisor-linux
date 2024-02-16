@@ -10,7 +10,7 @@ TARGETDIR=./target
 #-------------------------------------------------------------------------------
 
 XVISOR_CONFIG := xvisor_rv64-defconfig
-XVISOR_INITRD := $(TARGETDIR)/initrd.cpio
+XVISOR_INITRD := $(TARGETDIR)/xvisor_initrd.cpio
 XVISOR_BIN := $(TARGETDIR)/xvisor_vmm.bin
 XVISOR_ELF := $(TARGETDIR)/opensbi_xvisor_payload.elf
 XVISOR_DTB := $(TARGETDIR)/rv64gch_xvisor.dtb
