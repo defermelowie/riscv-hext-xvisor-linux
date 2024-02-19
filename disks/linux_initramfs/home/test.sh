@@ -3,9 +3,20 @@
 echo "[test] Show file structure"
 ls -alh /
 
-echo "[test] Show processes"
-top -b -n 1 > /home/top.txt
-cat /home/top.txt
+echo "[test] Try filesystem operations"
+cd /tmp
+pwd
+ls -alh
+echo "hello world" > newfile.txt
+mkdir newfolder
+cp newfile.txt newerfile.txt
+hexdump -C newerfile.txt
+ls -alh
+
+echo "[test] Busybox help"
+busybox --help
+
+echo "[test] Linux boot complete"
 
 echo "[test] Shutting down"
 poweroff -f

@@ -1,16 +1,15 @@
 #!/bin/busybox sh
 
-echo "[info] Mount devices"
+echo "[init] Mount devices"
 mount -t devtmpfs  devtmpfs  /dev
 mount -t proc      proc      /proc
 mount -t sysfs     sysfs     /sys
 mount -t tmpfs     tmpfs     /tmp
 
-echo "[info] Run test script"
+cat /home/banner.txt
 /home/test.sh
 
 # Busybox TTY fix
-echo "[info] Launch shell"
 setsid cttyhack sh
 # setsid sh -c 'sh </dev/hvc0 >/dev/hvc0 2>&1'
 
