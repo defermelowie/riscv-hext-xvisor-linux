@@ -11,7 +11,7 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/defermelowie/riscv-hext-ci-env/toolchain:v1.0.5
+      image: ghcr.io/defermelowie/riscv-hext-ci-env/toolchain:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
@@ -29,7 +29,7 @@ jobs:
         run: make setup
 
       - name: Build linux
-        run: make -f linux.mk build CROSS_COMPILE=riscv64-linux-gnu-
+        run: make -f linux.mk build
 
       - name: Archive linux binaries
         uses: actions/upload-artifact@v4
