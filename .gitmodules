@@ -10,9 +10,6 @@
 [submodule "busybox"]
 	path = busybox
 	url = git://busybox.net/busybox.git
-[submodule "sim/spike"]
-	path = sim/spike
-	url = git@github.com:riscv-software-src/riscv-isa-sim.git
 [submodule "sim/sail"]
 	path = sim/sail
 	url = git@github.com:defermelowie/riscv-hext-sail.git
