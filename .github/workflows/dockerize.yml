@@ -1,0 +1,111 @@
+name: Build & release docker images
+
+on:
+  push:
+    branches: [ "*" ]
+    tags: [ "v*.*.*" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: ghcr.io
+  REPOSITORY: ${{ github.repository }}
+  VERSION: wip # Could be updated to SemVer by first step
+
+jobs:
+  linux:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Set SemVer tag
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build linux-spike
+        uses: docker/build-push-action@v5
+        with:
+          tags: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}/linux-spike:${{ env.VERSION }}
+          context: .
+          push: true
+          target: linux-spike
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build linux-csim
+        uses: docker/build-push-action@v5
+        with:
+          tags: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}/linux-csim:${{ env.VERSION }}
+          context: .
+          push: true
+          target: linux-csim
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+
+  xvisor:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Set SemVer tag
+        if: startsWith(github.event.ref, 'refs/tags/v')
+        run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build xvisor-spike
+        uses: docker/build-push-action@v5
+        with:
+          tags: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}/xvisor-spike:${{ env.VERSION }}
+          context: .
+          push: true
+          target: xvisor-spike
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build xvisor-csim
+        uses: docker/build-push-action@v5
+        with:
+          tags: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}/xvisor-csim:${{ env.VERSION }}
+          context: .
+          push: true
+          target: xvisor-csim
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
