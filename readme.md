@@ -58,6 +58,23 @@ make linux-csim # WARNING: takes a long time
 
 ## Xvisor
 
+### Create device files (can't be tracked by git)
+
+```bash
+sudo mknod -m 666 initramfs/dev/null c 1 3
+```
+```bash
+sudo mknod -m 600 initramfs/dev/console c 5 1
+```
+
+### Build openSBI with xvisor payload & initrd containing a Linux image
+
+```bash
+make xvisor
+```
+
+### Update location of xvisor's initrd
+
 Find `initrd` address & update [`rv64gch_xvisor.dts`](rv64gch_xvisor.dts)
 ```bash
 riscv64-unknown-linux-gnu-objdump -x target/opensbi_xvisor_payload.elf | grep _initrd_
@@ -72,4 +89,10 @@ riscv64-unknown-linux-gnu-objdump -x target/opensbi_xvisor_payload.elf | grep _i
 -    linux,initrd-end   = <0x82800000>;
 +    linux,initrd-end   = <0x812eef40>;
    };
+```
+
+### Run xvisor on emulator
+```bash
+echo "autoexec" | make linux-spike
+echo "autoexec" | make linux-csim # WARNING: takes a very long time
 ```
