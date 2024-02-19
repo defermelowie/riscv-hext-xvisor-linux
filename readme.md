@@ -93,6 +93,6 @@ riscv64-unknown-linux-gnu-objdump -x target/opensbi_xvisor_payload.elf | grep _i
 
 ### Run xvisor on emulator
 ```bash
-echo "autoexec" | make linux-spike
-echo "autoexec" | make linux-csim # WARNING: takes a very long time
+echo "autoexec" | make xvisor-spike
+echo "autoexec" | make xvisor-csim # WARNING: takes a very long time
 ```
