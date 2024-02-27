@@ -120,27 +120,27 @@ jobs:
       - name: Cleanup linux-spike
         uses: actions/delete-package-versions@v4
         with:
-          package-name: 'linux-spike'
+          package-name: riscv-hext-xvisor-linux/linux-spike
           package-type: 'container'
           delete-only-untagged-versions: 'true'
 
       - name: Cleanup linux-csim
         uses: actions/delete-package-versions@v4
         with:
-          package-name: 'linux-csim'
+          package-name: riscv-hext-xvisor-linux/linux-csim
           package-type: 'container'
           delete-only-untagged-versions: 'true'
 
       - name: Cleanup xvisor-spike
         uses: actions/delete-package-versions@v4
         with:
-          package-name: 'xvisor-spike'
+          package-name: riscv-hext-xvisor-linux/xvisor-spike
           package-type: 'container'
           delete-only-untagged-versions: 'true'
 
       - name: Cleanup xvisor-csim
         uses: actions/delete-package-versions@v4
         with:
-          package-name: 'xvisor-csim'
+          package-name: riscv-hext-xvisor-linux/xvisor-csim
           package-type: 'container'
           delete-only-untagged-versions: 'true'
