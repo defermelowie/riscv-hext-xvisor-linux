@@ -33,6 +33,7 @@ jobs:
           haskell: true
           large-packages: true
           swap-storage: true
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
