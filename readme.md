@@ -19,8 +19,8 @@ Prebuild images are available with the spike emulator and the Sail extracted C e
 
 |           | **Linux**                                                                     | **Xvisor**                                                                      |
 |-----------|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
-| **Spike** | [`linux-spike`](ghcr.io/defermelowie/riscv-hext-xvisor-linux/linux-spike:wip) | [`xvisor-spike`](ghcr.io/defermelowie/riscv-hext-xvisor-linux/xvisor-spike:wip) |
-| **CSim**  | [`linux-csim`](ghcr.io/defermelowie/riscv-hext-xvisor-linux/linux-csim:wip)   | [`xvisor-csim`](ghcr.io/defermelowie/riscv-hext-xvisor-linux/xvisor-csim:wip)   |
+| **Spike** | [`linux-spike`](https://ghcr.io/defermelowie/riscv-hext-xvisor-linux/linux-spike:wip) | [`xvisor-spike`](https://ghcr.io/defermelowie/riscv-hext-xvisor-linux/xvisor-spike:wip) |
+| **CSim**  | [`linux-csim`](https://ghcr.io/defermelowie/riscv-hext-xvisor-linux/linux-csim:wip)   | [`xvisor-csim`](https://ghcr.io/defermelowie/riscv-hext-xvisor-linux/xvisor-csim:wip)   |
 
 These images can be used in similar fashion as the following `xvisor-csim` example.
 
