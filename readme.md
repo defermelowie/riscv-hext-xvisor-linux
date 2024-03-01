@@ -2,6 +2,7 @@
 
 [![Linux](https://github.com/defermelowie/riscv-hext-xvisor-linux/actions/workflows/linux.yml/badge.svg)](https://github.com/defermelowie/riscv-hext-xvisor-linux/actions/workflows/linux.yml)
 [![Xvisor](https://github.com/defermelowie/riscv-hext-xvisor-linux/actions/workflows/xvisor.yml/badge.svg)](https://github.com/defermelowie/riscv-hext-xvisor-linux/actions/workflows/xvisor.yml)
+[![Build & release docker images](https://github.com/defermelowie/riscv-hext-xvisor-linux/actions/workflows/dockerize.yml/badge.svg)](https://github.com/defermelowie/riscv-hext-xvisor-linux/actions/workflows/dockerize.yml)
 
 > **_NOTE:_** Xvisor run "fails" due to timeout since Xvisor is never shutdown after Linux successfully exits.
 > This issue probably won't be solved due to time constraints.
