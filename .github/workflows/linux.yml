@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - name: Install dependencies
-        run: apt-get update && apt-get install zlib1g-dev pkg-config libgmp-dev z3 -y
+        run: apt-get update && sudo apt-get install zlib1g-dev pkg-config libgmp-dev z3 -y
 
       - name: Checkout repository
         uses: actions/checkout@v4
