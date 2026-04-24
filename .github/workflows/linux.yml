@@ -12,7 +12,7 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/defermelowie/riscv-hext-ci-env/toolchain:latest
+      image: ghcr.io/defermelowie/riscv-hext-ci-env/toolchain:1.0.8
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
@@ -62,7 +62,7 @@ jobs:
       - name: Install sail
         run: |
           opam init --disable-sandboxing -y
-          opam install sail -y
+          opam install sail.0.18 -y
 
       - name: Build sail emulators
         run: |
