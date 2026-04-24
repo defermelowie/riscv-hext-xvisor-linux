@@ -12,7 +12,7 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/defermelowie/riscv-hext-ci-env/toolchain:1.0.8
+      image: ghcr.io/defermelowie/riscv-hext-ci-env/toolchain:v1.0.8
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
