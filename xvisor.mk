@@ -1,4 +1,4 @@
-CROSS_COMPILE=riscv64-unknown-linux-gnu-
+CROSS_COMPILE=riscv64-linux-gnu-
 
 CSIM=sim/sail/c_emulator/riscv_sim_RV64
 QEMU=qemu-system-riscv64
