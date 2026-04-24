@@ -9,7 +9,7 @@
 	url = git@github.com:torvalds/linux.git
 [submodule "busybox"]
 	path = busybox
-	url = git://busybox.net/busybox.git
+	url = https://git.busybox.net/busybox
 [submodule "sim/sail"]
 	path = sim/sail
 	url = git@github.com:defermelowie/riscv-hext-sail.git
