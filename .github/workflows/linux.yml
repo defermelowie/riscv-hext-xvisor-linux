@@ -50,12 +50,12 @@ jobs:
         run: sudo apt-get install zlib1g-dev pkg-config libgmp-dev z3 -y
 
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: true
 
       - name: Setup ocaml
-        uses: ocaml/setup-ocaml@v2
+        uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: "5.1"
 
