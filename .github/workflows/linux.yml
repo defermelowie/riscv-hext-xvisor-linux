@@ -24,7 +24,7 @@ jobs:
           submodules: true
 
       - name: Install build dependencies
-        run: apt-get install cpio bison flex bc device-tree-compiler -y
+        run: apt-get update && apt-get install cpio bison flex bc device-tree-compiler -y
 
       - name: Setup directory structure
         run: make setup
